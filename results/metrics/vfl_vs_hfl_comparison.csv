@@ -1,0 +1,5 @@
+Paradigm,Algorithm,Accuracy,F1-Score,Parameters,Communication Traffic (Bytes),Data Partition Mode
+Horizontal Federated Learning (HFL),FedAvg,0.76,0.76,57,13680,"Disjoint patients, shared complete features"
+Horizontal Federated Learning (HFL),FedProx (mu=0.01),0.7567,0.7559,57,13680,"Disjoint patients, shared complete features"
+Horizontal Federated Learning (HFL),FedAvg with SecAgg,0.76,0.76,57,15920,"Disjoint patients, masked parameter aggregation"
+Vertical Federated Learning (VFL),VFL SplitNN,0.85,0.8525,45,11520000,"Aligned patients (PSI), disjoint clinical features"

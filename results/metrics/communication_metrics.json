@@ -1,0 +1,106 @@
+{
+    "total_rounds": 3,
+    "num_clients": 3,
+    "parameter_count": 57,
+    "parameter_bytes": 456,
+    "parameter_dtype": "float64",
+    "bytes_per_parameter": 8,
+    "upload_bytes_per_client_per_round": 456,
+    "download_bytes_per_client_per_round": 456,
+    "total_upload_bytes": 4104,
+    "total_download_bytes": 4104,
+    "total_communication_bytes": 8208,
+    "total_communication_kb": 8.0156,
+    "total_communication_mb": 0.007828,
+    "average_communication_bytes_per_round": 2736.0,
+    "average_communication_kb_per_round": 2.6719,
+    "total_training_time_seconds": 0.0144,
+    "total_aggregation_time_seconds": 0.00015,
+    "total_experiment_duration_seconds": 0.0149,
+    "average_training_time_per_round_seconds": 0.0048,
+    "average_round_duration_seconds": 0.005,
+    "is_secure_aggregation": false,
+    "total_secure_aggregation_overhead_bytes": 0,
+    "per_round_metrics": [
+        {
+            "round": 1,
+            "upload_bytes": 1368,
+            "download_bytes": 1368,
+            "total_communication_bytes": 2736,
+            "cumulative_communication_bytes": 2736,
+            "training_time_seconds": 0.0055,
+            "aggregation_time_seconds": 5.7e-05,
+            "round_duration_seconds": 0.0058
+        },
+        {
+            "round": 2,
+            "upload_bytes": 1368,
+            "download_bytes": 1368,
+            "total_communication_bytes": 2736,
+            "cumulative_communication_bytes": 5472,
+            "training_time_seconds": 0.0047,
+            "aggregation_time_seconds": 4.7e-05,
+            "round_duration_seconds": 0.0048
+        },
+        {
+            "round": 3,
+            "upload_bytes": 1368,
+            "download_bytes": 1368,
+            "total_communication_bytes": 2736,
+            "cumulative_communication_bytes": 8208,
+            "training_time_seconds": 0.0042,
+            "aggregation_time_seconds": 4.6e-05,
+            "round_duration_seconds": 0.0043
+        }
+    ],
+    "layer_breakdown": {
+        "W1": {
+            "shape": [
+                5,
+                8
+            ],
+            "parameters": 40,
+            "bytes": 320,
+            "dtype": "float64"
+        },
+        "b1": {
+            "shape": [
+                1,
+                8
+            ],
+            "parameters": 8,
+            "bytes": 64,
+            "dtype": "float64"
+        },
+        "W2": {
+            "shape": [
+                8,
+                1
+            ],
+            "parameters": 8,
+            "bytes": 64,
+            "dtype": "float64"
+        },
+        "b2": {
+            "shape": [
+                1,
+                1
+            ],
+            "parameters": 1,
+            "bytes": 8,
+            "dtype": "float64"
+        }
+    },
+    "communication_assumptions": {
+        "transmission_mode": "Full parameter exchange (W1, b1, W2, b2 tensors transferred each round)",
+        "parameter_precision": "float64 (8 bytes/parameter)",
+        "compression": "None (uncompressed raw NumPy tensors)",
+        "quantization": "None (full 64-bit IEEE 754 float precision)",
+        "protocol_overhead": "Excluded (estimates reflect raw parameter payloads; socket/TCP headers omitted)",
+        "network_simulation": "Estimated mathematically from model tensors and protocol messages; no physical network transmission",
+        "client_upload_rule": "Each participating client uploads its entire local parameter dictionary (masked under Secure Aggregation)",
+        "coordinator_broadcast_rule": "Coordinator distributes the identical global parameter dictionary to each client"
+    },
+    "algorithm": "FedAvg",
+    "mu": 0.0
+}

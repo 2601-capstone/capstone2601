@@ -1,0 +1,146 @@
+{
+    "hospital_demographics": {
+        "hospital_1": {
+            "name": "Hospital 1",
+            "type": "Specialty Center (65% High Risk)",
+            "c0": 35,
+            "c1": 65
+        },
+        "hospital_2": {
+            "name": "Hospital 2",
+            "type": "Community Hospital (50% Balanced)",
+            "c0": 50,
+            "c1": 50
+        },
+        "hospital_3": {
+            "name": "Hospital 3",
+            "type": "Primary Clinic (39% Low Risk)",
+            "c0": 61,
+            "c1": 39
+        }
+    },
+    "hospital_global_metrics": {
+        "hospital_1": {
+            "accuracy": 0.79,
+            "precision": 0.8793103448275862,
+            "recall": 0.7846153846153846,
+            "f1_score": 0.8292682926829268,
+            "roc_auc": 0.8474725274725275,
+            "confusion_matrix": [
+                [
+                    28,
+                    7
+                ],
+                [
+                    14,
+                    51
+                ]
+            ]
+        },
+        "hospital_2": {
+            "accuracy": 0.73,
+            "precision": 0.7446808510638298,
+            "recall": 0.7,
+            "f1_score": 0.7216494845360825,
+            "roc_auc": 0.8536,
+            "confusion_matrix": [
+                [
+                    38,
+                    12
+                ],
+                [
+                    15,
+                    35
+                ]
+            ]
+        },
+        "hospital_3": {
+            "accuracy": 0.76,
+            "precision": 0.6829268292682927,
+            "recall": 0.717948717948718,
+            "f1_score": 0.7,
+            "roc_auc": 0.8448928121059268,
+            "confusion_matrix": [
+                [
+                    48,
+                    13
+                ],
+                [
+                    11,
+                    28
+                ]
+            ]
+        }
+    },
+    "hospital_local_metrics": {
+        "hospital_1": {
+            "accuracy": 0.72,
+            "precision": 0.7466666666666667,
+            "recall": 0.8615384615384616,
+            "f1_score": 0.8,
+            "roc_auc": 0.8483516483516483,
+            "confusion_matrix": [
+                [
+                    16,
+                    19
+                ],
+                [
+                    9,
+                    56
+                ]
+            ]
+        },
+        "hospital_2": {
+            "accuracy": 0.72,
+            "precision": 0.7619047619047619,
+            "recall": 0.64,
+            "f1_score": 0.6956521739130435,
+            "roc_auc": 0.8455999999999999,
+            "confusion_matrix": [
+                [
+                    40,
+                    10
+                ],
+                [
+                    18,
+                    32
+                ]
+            ]
+        },
+        "hospital_3": {
+            "accuracy": 0.71,
+            "precision": 0.75,
+            "recall": 0.38461538461538464,
+            "f1_score": 0.5084745762711864,
+            "roc_auc": 0.8537200504413619,
+            "confusion_matrix": [
+                [
+                    56,
+                    5
+                ],
+                [
+                    24,
+                    15
+                ]
+            ]
+        }
+    },
+    "robustness_statistics": {
+        "mean_accuracy": 0.76,
+        "accuracy_variance": 0.0006,
+        "accuracy_std": 0.0245,
+        "min_accuracy": 0.73,
+        "max_accuracy": 0.79,
+        "accuracy_gap": 0.06,
+        "best_hospital_accuracy": "hospital_1",
+        "worst_hospital_accuracy": "hospital_2",
+        "mean_f1": 0.7503,
+        "f1_variance": 0.003196,
+        "f1_std": 0.0565,
+        "min_f1": 0.7,
+        "max_f1": 0.8293,
+        "f1_gap": 0.1293,
+        "best_hospital_f1": "hospital_1",
+        "worst_hospital_f1": "hospital_3"
+    }
+}

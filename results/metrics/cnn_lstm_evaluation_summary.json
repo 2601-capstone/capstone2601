@@ -1,0 +1,110 @@
+{
+    "experiment": "Phase 14 Hybrid CNN-LSTM Benchmark",
+    "sequence_length": 12,
+    "num_features": 5,
+    "training_configuration": {
+        "epochs": 15,
+        "batch_size": 32,
+        "learning_rate": 0.005,
+        "random_seed": 42
+    },
+    "dataset_sizes": {
+        "train_patients": 700,
+        "val_patients": 150,
+        "test_patients": 150
+    },
+    "models_evaluated": {
+        "MLP Baseline (Flattened)": {
+            "parameters": 993,
+            "size_kb": 3.879,
+            "training_time_sec": 2.577,
+            "metrics": {
+                "loss": 0.3455,
+                "accuracy": 0.8467,
+                "precision": 0.8286,
+                "recall": 0.9457,
+                "f1_score": 0.8832,
+                "roc_auc": 0.9249,
+                "confusion_matrix": [
+                    [
+                        40,
+                        18
+                    ],
+                    [
+                        5,
+                        87
+                    ]
+                ]
+            }
+        },
+        "Pure 1D CNN": {
+            "parameters": 273,
+            "size_kb": 1.066,
+            "training_time_sec": 1.45,
+            "metrics": {
+                "loss": 0.4975,
+                "accuracy": 0.76,
+                "precision": 0.7857,
+                "recall": 0.837,
+                "f1_score": 0.8105,
+                "roc_auc": 0.8281,
+                "confusion_matrix": [
+                    [
+                        37,
+                        21
+                    ],
+                    [
+                        15,
+                        77
+                    ]
+                ]
+            }
+        },
+        "Pure LSTM": {
+            "parameters": 1489,
+            "size_kb": 5.816,
+            "training_time_sec": 1.685,
+            "metrics": {
+                "loss": 0.4567,
+                "accuracy": 0.7933,
+                "precision": 0.8211,
+                "recall": 0.8478,
+                "f1_score": 0.8342,
+                "roc_auc": 0.8628,
+                "confusion_matrix": [
+                    [
+                        41,
+                        17
+                    ],
+                    [
+                        14,
+                        78
+                    ]
+                ]
+            }
+        },
+        "Hybrid CNN-LSTM": {
+            "parameters": 2449,
+            "size_kb": 9.566,
+            "training_time_sec": 2.388,
+            "metrics": {
+                "loss": 0.4571,
+                "accuracy": 0.8133,
+                "precision": 0.8556,
+                "recall": 0.837,
+                "f1_score": 0.8462,
+                "roc_auc": 0.8628,
+                "confusion_matrix": [
+                    [
+                        45,
+                        13
+                    ],
+                    [
+                        15,
+                        77
+                    ]
+                ]
+            }
+        }
+    }
+}

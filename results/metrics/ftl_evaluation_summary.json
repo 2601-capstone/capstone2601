@@ -1,0 +1,763 @@
+{
+    "algorithm": "Federated Transfer Learning",
+    "paradigm": "FTL (Cross-Domain Representation Transfer)",
+    "source_domain": {
+        "name": "Metropolitan Medical Center (Source Hospital)",
+        "description": "Large urban medical center with diverse adult patient population.",
+        "sample_size": 1200,
+        "train_samples": 1000,
+        "test_samples": 200,
+        "age_mean": 50.0,
+        "age_std": 12.0,
+        "bp_mean": 124.0,
+        "bp_std": 15.0,
+        "glucose_mean": 108.0,
+        "glucose_std": 25.0,
+        "bmi_mean": 26.8,
+        "bmi_std": 4.8,
+        "chol_mean": 198.0,
+        "chol_std": 32.0,
+        "noise_std": 0.45
+    },
+    "target_domain": {
+        "name": "Geriatric Community Clinic (Target Hospital)",
+        "description": "Specialized senior health center with older demographic and higher cardiovascular/metabolic risks.",
+        "sample_size": 300,
+        "train_samples": 200,
+        "test_samples": 100,
+        "age_mean": 68.0,
+        "age_std": 8.0,
+        "bp_mean": 142.0,
+        "bp_std": 18.0,
+        "glucose_mean": 130.0,
+        "glucose_std": 35.0,
+        "bmi_mean": 29.2,
+        "bmi_std": 5.5,
+        "chol_mean": 225.0,
+        "chol_std": 40.0,
+        "noise_std": 0.5
+    },
+    "experimental_setup": {
+        "source_training_samples": 1000,
+        "target_training_pool_samples": 200,
+        "target_test_samples": 100,
+        "evaluated_fractions": [
+            0.1,
+            0.25,
+            0.5,
+            1.0
+        ],
+        "source_epochs": 40,
+        "target_epochs": 30,
+        "learning_rate": 0.02,
+        "batch_size": 32,
+        "random_seed": 42
+    },
+    "source_pretraining": {
+        "source_training_time_seconds": 0.16,
+        "final_source_loss": 0.300462
+    },
+    "results_by_fraction": {
+        "10%": {
+            "fraction": 0.1,
+            "target_samples": 20,
+            "target_only": {
+                "metrics": {
+                    "accuracy": 0.66,
+                    "precision": 0.6024096385542169,
+                    "recall": 0.9803921568627451,
+                    "f1_score": 0.746268656716418,
+                    "roc_auc": 0.7426970788315326,
+                    "confusion_matrix": [
+                        [
+                            16,
+                            33
+                        ],
+                        [
+                            1,
+                            50
+                        ]
+                    ],
+                    "test_samples": 100
+                },
+                "training_time": 0.0014
+            },
+            "source_only": {
+                "metrics": {
+                    "accuracy": 0.56,
+                    "precision": 0.5368421052631579,
+                    "recall": 1.0,
+                    "f1_score": 0.6986301369863014,
+                    "roc_auc": 0.8571428571428571,
+                    "confusion_matrix": [
+                        [
+                            5,
+                            44
+                        ],
+                        [
+                            0,
+                            51
+                        ]
+                    ],
+                    "test_samples": 100
+                },
+                "training_time": 0.0
+            },
+            "ftl_feature_extraction": {
+                "metrics": {
+                    "accuracy": 0.58,
+                    "precision": 0.5494505494505495,
+                    "recall": 0.9803921568627451,
+                    "f1_score": 0.704225352112676,
+                    "roc_auc": 0.8643457382953181,
+                    "confusion_matrix": [
+                        [
+                            8,
+                            41
+                        ],
+                        [
+                            1,
+                            50
+                        ]
+                    ],
+                    "test_samples": 100
+                },
+                "training_time": 0.0041
+            },
+            "ftl_full_fine_tuning": {
+                "metrics": {
+                    "accuracy": 0.59,
+                    "precision": 0.5555555555555556,
+                    "recall": 0.9803921568627451,
+                    "f1_score": 0.7092198581560284,
+                    "roc_auc": 0.8523409363745498,
+                    "confusion_matrix": [
+                        [
+                            9,
+                            40
+                        ],
+                        [
+                            1,
+                            50
+                        ]
+                    ],
+                    "test_samples": 100
+                },
+                "training_time": 0.0041
+            },
+            "centralized_combined": {
+                "metrics": {
+                    "accuracy": 0.56,
+                    "precision": 0.5368421052631579,
+                    "recall": 1.0,
+                    "f1_score": 0.6986301369863014,
+                    "roc_auc": 0.9303721488595438,
+                    "confusion_matrix": [
+                        [
+                            5,
+                            44
+                        ],
+                        [
+                            0,
+                            51
+                        ]
+                    ],
+                    "test_samples": 100
+                },
+                "training_time": 0.1103
+            }
+        },
+        "25%": {
+            "fraction": 0.25,
+            "target_samples": 50,
+            "target_only": {
+                "metrics": {
+                    "accuracy": 0.62,
+                    "precision": 0.5802469135802469,
+                    "recall": 0.9215686274509803,
+                    "f1_score": 0.7121212121212122,
+                    "roc_auc": 0.5606242496998799,
+                    "confusion_matrix": [
+                        [
+                            15,
+                            34
+                        ],
+                        [
+                            4,
+                            47
+                        ]
+                    ],
+                    "test_samples": 100
+                },
+                "training_time": 0.0082
+            },
+            "source_only": {
+                "metrics": {
+                    "accuracy": 0.56,
+                    "precision": 0.5368421052631579,
+                    "recall": 1.0,
+                    "f1_score": 0.6986301369863014,
+                    "roc_auc": 0.8571428571428571,
+                    "confusion_matrix": [
+                        [
+                            5,
+                            44
+                        ],
+                        [
+                            0,
+                            51
+                        ]
+                    ],
+                    "test_samples": 100
+                },
+                "training_time": 0.0
+            },
+            "ftl_feature_extraction": {
+                "metrics": {
+                    "accuracy": 0.63,
+                    "precision": 0.5813953488372093,
+                    "recall": 0.9803921568627451,
+                    "f1_score": 0.7299270072992701,
+                    "roc_auc": 0.8503401360544217,
+                    "confusion_matrix": [
+                        [
+                            13,
+                            36
+                        ],
+                        [
+                            1,
+                            50
+                        ]
+                    ],
+                    "test_samples": 100
+                },
+                "training_time": 0.008
+            },
+            "ftl_full_fine_tuning": {
+                "metrics": {
+                    "accuracy": 0.65,
+                    "precision": 0.5975609756097561,
+                    "recall": 0.9607843137254902,
+                    "f1_score": 0.7368421052631579,
+                    "roc_auc": 0.8227290916366546,
+                    "confusion_matrix": [
+                        [
+                            16,
+                            33
+                        ],
+                        [
+                            2,
+                            49
+                        ]
+                    ],
+                    "test_samples": 100
+                },
+                "training_time": 0.0081
+            },
+            "centralized_combined": {
+                "metrics": {
+                    "accuracy": 0.58,
+                    "precision": 0.5483870967741935,
+                    "recall": 1.0,
+                    "f1_score": 0.7083333333333334,
+                    "roc_auc": 0.7595038015206083,
+                    "confusion_matrix": [
+                        [
+                            7,
+                            42
+                        ],
+                        [
+                            0,
+                            51
+                        ]
+                    ],
+                    "test_samples": 100
+                },
+                "training_time": 0.1241
+            }
+        },
+        "50%": {
+            "fraction": 0.5,
+            "target_samples": 100,
+            "target_only": {
+                "metrics": {
+                    "accuracy": 0.59,
+                    "precision": 0.5543478260869565,
+                    "recall": 1.0,
+                    "f1_score": 0.7132867132867133,
+                    "roc_auc": 0.7210884353741497,
+                    "confusion_matrix": [
+                        [
+                            8,
+                            41
+                        ],
+                        [
+                            0,
+                            51
+                        ]
+                    ],
+                    "test_samples": 100
+                },
+                "training_time": 0.0149
+            },
+            "source_only": {
+                "metrics": {
+                    "accuracy": 0.56,
+                    "precision": 0.5368421052631579,
+                    "recall": 1.0,
+                    "f1_score": 0.6986301369863014,
+                    "roc_auc": 0.8571428571428571,
+                    "confusion_matrix": [
+                        [
+                            5,
+                            44
+                        ],
+                        [
+                            0,
+                            51
+                        ]
+                    ],
+                    "test_samples": 100
+                },
+                "training_time": 0.0
+            },
+            "ftl_feature_extraction": {
+                "metrics": {
+                    "accuracy": 0.69,
+                    "precision": 0.631578947368421,
+                    "recall": 0.9411764705882353,
+                    "f1_score": 0.7559055118110236,
+                    "roc_auc": 0.8359343737494999,
+                    "confusion_matrix": [
+                        [
+                            21,
+                            28
+                        ],
+                        [
+                            3,
+                            48
+                        ]
+                    ],
+                    "test_samples": 100
+                },
+                "training_time": 0.0138
+            },
+            "ftl_full_fine_tuning": {
+                "metrics": {
+                    "accuracy": 0.71,
+                    "precision": 0.6527777777777778,
+                    "recall": 0.9215686274509803,
+                    "f1_score": 0.7642276422764228,
+                    "roc_auc": 0.82953181272509,
+                    "confusion_matrix": [
+                        [
+                            24,
+                            25
+                        ],
+                        [
+                            4,
+                            47
+                        ]
+                    ],
+                    "test_samples": 100
+                },
+                "training_time": 0.0147
+            },
+            "centralized_combined": {
+                "metrics": {
+                    "accuracy": 0.57,
+                    "precision": 0.5425531914893617,
+                    "recall": 1.0,
+                    "f1_score": 0.7034482758620689,
+                    "roc_auc": 0.8379351740696278,
+                    "confusion_matrix": [
+                        [
+                            6,
+                            43
+                        ],
+                        [
+                            0,
+                            51
+                        ]
+                    ],
+                    "test_samples": 100
+                },
+                "training_time": 0.1231
+            }
+        },
+        "100%": {
+            "fraction": 1.0,
+            "target_samples": 200,
+            "target_only": {
+                "metrics": {
+                    "accuracy": 0.77,
+                    "precision": 0.7058823529411765,
+                    "recall": 0.9411764705882353,
+                    "f1_score": 0.8067226890756303,
+                    "roc_auc": 0.8835534213685473,
+                    "confusion_matrix": [
+                        [
+                            29,
+                            20
+                        ],
+                        [
+                            3,
+                            48
+                        ]
+                    ],
+                    "test_samples": 100
+                },
+                "training_time": 0.0263
+            },
+            "source_only": {
+                "metrics": {
+                    "accuracy": 0.56,
+                    "precision": 0.5368421052631579,
+                    "recall": 1.0,
+                    "f1_score": 0.6986301369863014,
+                    "roc_auc": 0.8571428571428571,
+                    "confusion_matrix": [
+                        [
+                            5,
+                            44
+                        ],
+                        [
+                            0,
+                            51
+                        ]
+                    ],
+                    "test_samples": 100
+                },
+                "training_time": 0.0
+            },
+            "ftl_feature_extraction": {
+                "metrics": {
+                    "accuracy": 0.72,
+                    "precision": 0.6666666666666666,
+                    "recall": 0.9019607843137255,
+                    "f1_score": 0.7666666666666667,
+                    "roc_auc": 0.8275310124049621,
+                    "confusion_matrix": [
+                        [
+                            26,
+                            23
+                        ],
+                        [
+                            5,
+                            46
+                        ]
+                    ],
+                    "test_samples": 100
+                },
+                "training_time": 0.0262
+            },
+            "ftl_full_fine_tuning": {
+                "metrics": {
+                    "accuracy": 0.74,
+                    "precision": 0.6923076923076923,
+                    "recall": 0.8823529411764706,
+                    "f1_score": 0.7758620689655172,
+                    "roc_auc": 0.8263305322128852,
+                    "confusion_matrix": [
+                        [
+                            29,
+                            20
+                        ],
+                        [
+                            6,
+                            45
+                        ]
+                    ],
+                    "test_samples": 100
+                },
+                "training_time": 0.0236
+            },
+            "centralized_combined": {
+                "metrics": {
+                    "accuracy": 0.6,
+                    "precision": 0.5617977528089888,
+                    "recall": 0.9803921568627451,
+                    "f1_score": 0.7142857142857143,
+                    "roc_auc": 0.8883553421368546,
+                    "confusion_matrix": [
+                        [
+                            10,
+                            39
+                        ],
+                        [
+                            1,
+                            50
+                        ]
+                    ],
+                    "test_samples": 100
+                },
+                "training_time": 0.1294
+            }
+        }
+    },
+    "communication_analysis": {
+        "paradigm": "Federated Transfer Learning (FTL)",
+        "transfer_events": 1,
+        "total_parameters": 57,
+        "parameter_bytes": 456,
+        "bytes_per_parameter": 8,
+        "feature_extractor_parameters": 48,
+        "feature_extractor_bytes": 384,
+        "prediction_head_parameters": 9,
+        "prediction_head_bytes": 72,
+        "source_to_target_transfer_bytes": 456,
+        "source_to_target_transfer_kb": 0.4453,
+        "target_fine_tuning_network_bytes": 0,
+        "total_communication_bytes": 456,
+        "total_communication_kb": 0.4453,
+        "scaling_nature": "O(|W|) - Single one-time parameter transfer; fine-tuning is strictly on-premise",
+        "assumptions": {
+            "parameter_transfer": "One-time transfer of 57 float64 weights from Source to Target = 456 Bytes.",
+            "fine_tuning": "0 Bytes network exchange during target fine-tuning (local GPU/CPU computation).",
+            "privacy_disclaimer": "Transferring model parameters does not guarantee source data confidentiality; DP-SGD or parameter obfuscation is required in adversarial regimes.",
+            "measurement_mode": "Simulated serialization size based on float64 NumPy tensors (no socket headers)."
+        }
+    },
+    "comparison_table": [
+        {
+            "Target Labeled Fraction": "10%",
+            "Target Sample Count": 20,
+            "Approach": "Target-Only (Scratch)",
+            "Strategy / Model Type": "Local Baseline",
+            "Accuracy": 0.66,
+            "Precision": 0.6024,
+            "Recall": 0.9804,
+            "F1-Score": 0.7463,
+            "ROC-AUC": 0.7427,
+            "Training Time (s)": 0.0014
+        },
+        {
+            "Target Labeled Fraction": "10%",
+            "Target Sample Count": 20,
+            "Approach": "Source-Only (Zero-Shot)",
+            "Strategy / Model Type": "Direct Transfer (No adaptation)",
+            "Accuracy": 0.56,
+            "Precision": 0.5368,
+            "Recall": 1.0,
+            "F1-Score": 0.6986,
+            "ROC-AUC": 0.8571,
+            "Training Time (s)": 0.0
+        },
+        {
+            "Target Labeled Fraction": "10%",
+            "Target Sample Count": 20,
+            "Approach": "FTL: Feature Extraction",
+            "Strategy / Model Type": "Frozen W1, b1 (Trained Head)",
+            "Accuracy": 0.58,
+            "Precision": 0.5495,
+            "Recall": 0.9804,
+            "F1-Score": 0.7042,
+            "ROC-AUC": 0.8643,
+            "Training Time (s)": 0.0041
+        },
+        {
+            "Target Labeled Fraction": "10%",
+            "Target Sample Count": 20,
+            "Approach": "FTL: Full Fine-Tuning",
+            "Strategy / Model Type": "Source Initialized (All layers tuned)",
+            "Accuracy": 0.59,
+            "Precision": 0.5556,
+            "Recall": 0.9804,
+            "F1-Score": 0.7092,
+            "ROC-AUC": 0.8523,
+            "Training Time (s)": 0.0041
+        },
+        {
+            "Target Labeled Fraction": "10%",
+            "Target Sample Count": 20,
+            "Approach": "Centralized Combined (Reference)",
+            "Strategy / Model Type": "Non-Federated Upper-Bound",
+            "Accuracy": 0.56,
+            "Precision": 0.5368,
+            "Recall": 1.0,
+            "F1-Score": 0.6986,
+            "ROC-AUC": 0.9304,
+            "Training Time (s)": 0.1103
+        },
+        {
+            "Target Labeled Fraction": "25%",
+            "Target Sample Count": 50,
+            "Approach": "Target-Only (Scratch)",
+            "Strategy / Model Type": "Local Baseline",
+            "Accuracy": 0.62,
+            "Precision": 0.5802,
+            "Recall": 0.9216,
+            "F1-Score": 0.7121,
+            "ROC-AUC": 0.5606,
+            "Training Time (s)": 0.0082
+        },
+        {
+            "Target Labeled Fraction": "25%",
+            "Target Sample Count": 50,
+            "Approach": "Source-Only (Zero-Shot)",
+            "Strategy / Model Type": "Direct Transfer (No adaptation)",
+            "Accuracy": 0.56,
+            "Precision": 0.5368,
+            "Recall": 1.0,
+            "F1-Score": 0.6986,
+            "ROC-AUC": 0.8571,
+            "Training Time (s)": 0.0
+        },
+        {
+            "Target Labeled Fraction": "25%",
+            "Target Sample Count": 50,
+            "Approach": "FTL: Feature Extraction",
+            "Strategy / Model Type": "Frozen W1, b1 (Trained Head)",
+            "Accuracy": 0.63,
+            "Precision": 0.5814,
+            "Recall": 0.9804,
+            "F1-Score": 0.7299,
+            "ROC-AUC": 0.8503,
+            "Training Time (s)": 0.008
+        },
+        {
+            "Target Labeled Fraction": "25%",
+            "Target Sample Count": 50,
+            "Approach": "FTL: Full Fine-Tuning",
+            "Strategy / Model Type": "Source Initialized (All layers tuned)",
+            "Accuracy": 0.65,
+            "Precision": 0.5976,
+            "Recall": 0.9608,
+            "F1-Score": 0.7368,
+            "ROC-AUC": 0.8227,
+            "Training Time (s)": 0.0081
+        },
+        {
+            "Target Labeled Fraction": "25%",
+            "Target Sample Count": 50,
+            "Approach": "Centralized Combined (Reference)",
+            "Strategy / Model Type": "Non-Federated Upper-Bound",
+            "Accuracy": 0.58,
+            "Precision": 0.5484,
+            "Recall": 1.0,
+            "F1-Score": 0.7083,
+            "ROC-AUC": 0.7595,
+            "Training Time (s)": 0.1241
+        },
+        {
+            "Target Labeled Fraction": "50%",
+            "Target Sample Count": 100,
+            "Approach": "Target-Only (Scratch)",
+            "Strategy / Model Type": "Local Baseline",
+            "Accuracy": 0.59,
+            "Precision": 0.5543,
+            "Recall": 1.0,
+            "F1-Score": 0.7133,
+            "ROC-AUC": 0.7211,
+            "Training Time (s)": 0.0149
+        },
+        {
+            "Target Labeled Fraction": "50%",
+            "Target Sample Count": 100,
+            "Approach": "Source-Only (Zero-Shot)",
+            "Strategy / Model Type": "Direct Transfer (No adaptation)",
+            "Accuracy": 0.56,
+            "Precision": 0.5368,
+            "Recall": 1.0,
+            "F1-Score": 0.6986,
+            "ROC-AUC": 0.8571,
+            "Training Time (s)": 0.0
+        },
+        {
+            "Target Labeled Fraction": "50%",
+            "Target Sample Count": 100,
+            "Approach": "FTL: Feature Extraction",
+            "Strategy / Model Type": "Frozen W1, b1 (Trained Head)",
+            "Accuracy": 0.69,
+            "Precision": 0.6316,
+            "Recall": 0.9412,
+            "F1-Score": 0.7559,
+            "ROC-AUC": 0.8359,
+            "Training Time (s)": 0.0138
+        },
+        {
+            "Target Labeled Fraction": "50%",
+            "Target Sample Count": 100,
+            "Approach": "FTL: Full Fine-Tuning",
+            "Strategy / Model Type": "Source Initialized (All layers tuned)",
+            "Accuracy": 0.71,
+            "Precision": 0.6528,
+            "Recall": 0.9216,
+            "F1-Score": 0.7642,
+            "ROC-AUC": 0.8295,
+            "Training Time (s)": 0.0147
+        },
+        {
+            "Target Labeled Fraction": "50%",
+            "Target Sample Count": 100,
+            "Approach": "Centralized Combined (Reference)",
+            "Strategy / Model Type": "Non-Federated Upper-Bound",
+            "Accuracy": 0.57,
+            "Precision": 0.5426,
+            "Recall": 1.0,
+            "F1-Score": 0.7034,
+            "ROC-AUC": 0.8379,
+            "Training Time (s)": 0.1231
+        },
+        {
+            "Target Labeled Fraction": "100%",
+            "Target Sample Count": 200,
+            "Approach": "Target-Only (Scratch)",
+            "Strategy / Model Type": "Local Baseline",
+            "Accuracy": 0.77,
+            "Precision": 0.7059,
+            "Recall": 0.9412,
+            "F1-Score": 0.8067,
+            "ROC-AUC": 0.8836,
+            "Training Time (s)": 0.0263
+        },
+        {
+            "Target Labeled Fraction": "100%",
+            "Target Sample Count": 200,
+            "Approach": "Source-Only (Zero-Shot)",
+            "Strategy / Model Type": "Direct Transfer (No adaptation)",
+            "Accuracy": 0.56,
+            "Precision": 0.5368,
+            "Recall": 1.0,
+            "F1-Score": 0.6986,
+            "ROC-AUC": 0.8571,
+            "Training Time (s)": 0.0
+        },
+        {
+            "Target Labeled Fraction": "100%",
+            "Target Sample Count": 200,
+            "Approach": "FTL: Feature Extraction",
+            "Strategy / Model Type": "Frozen W1, b1 (Trained Head)",
+            "Accuracy": 0.72,
+            "Precision": 0.6667,
+            "Recall": 0.902,
+            "F1-Score": 0.7667,
+            "ROC-AUC": 0.8275,
+            "Training Time (s)": 0.0262
+        },
+        {
+            "Target Labeled Fraction": "100%",
+            "Target Sample Count": 200,
+            "Approach": "FTL: Full Fine-Tuning",
+            "Strategy / Model Type": "Source Initialized (All layers tuned)",
+            "Accuracy": 0.74,
+            "Precision": 0.6923,
+            "Recall": 0.8824,
+            "F1-Score": 0.7759,
+            "ROC-AUC": 0.8263,
+            "Training Time (s)": 0.0236
+        },
+        {
+            "Target Labeled Fraction": "100%",
+            "Target Sample Count": 200,
+            "Approach": "Centralized Combined (Reference)",
+            "Strategy / Model Type": "Non-Federated Upper-Bound",
+            "Accuracy": 0.6,
+            "Precision": 0.5618,
+            "Recall": 0.9804,
+            "F1-Score": 0.7143,
+            "ROC-AUC": 0.8884,
+            "Training Time (s)": 0.1294
+        }
+    ]
+}

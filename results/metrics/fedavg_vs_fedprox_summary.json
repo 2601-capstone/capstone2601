@@ -1,0 +1,313 @@
+{
+    "experiment_configuration": {
+        "num_rounds": 5,
+        "local_epochs": 10,
+        "batch_size": 32,
+        "learning_rate": 0.01,
+        "fedprox_mu": 0.01,
+        "random_seed": 42
+    },
+    "central_evaluation": {
+        "fedavg": {
+            "accuracy": 0.76,
+            "precision": 0.7808219178082192,
+            "recall": 0.7402597402597403,
+            "f1_score": 0.76,
+            "roc_auc": 0.8500711617149973,
+            "confusion_matrix": [
+                [
+                    114,
+                    32
+                ],
+                [
+                    40,
+                    114
+                ]
+            ]
+        },
+        "fedprox": {
+            "accuracy": 0.7566666666666667,
+            "precision": 0.7793103448275862,
+            "recall": 0.7337662337662337,
+            "f1_score": 0.7558528428093646,
+            "roc_auc": 0.848959259918164,
+            "confusion_matrix": [
+                [
+                    114,
+                    32
+                ],
+                [
+                    41,
+                    113
+                ]
+            ]
+        }
+    },
+    "client_robustness": {
+        "fedavg_clients": {
+            "hospital_1": {
+                "accuracy": 0.79,
+                "precision": 0.8793103448275862,
+                "recall": 0.7846153846153846,
+                "f1_score": 0.8292682926829268,
+                "roc_auc": 0.8474725274725275,
+                "confusion_matrix": [
+                    [
+                        28,
+                        7
+                    ],
+                    [
+                        14,
+                        51
+                    ]
+                ]
+            },
+            "hospital_2": {
+                "accuracy": 0.73,
+                "precision": 0.7446808510638298,
+                "recall": 0.7,
+                "f1_score": 0.7216494845360825,
+                "roc_auc": 0.8536,
+                "confusion_matrix": [
+                    [
+                        38,
+                        12
+                    ],
+                    [
+                        15,
+                        35
+                    ]
+                ]
+            },
+            "hospital_3": {
+                "accuracy": 0.76,
+                "precision": 0.6829268292682927,
+                "recall": 0.717948717948718,
+                "f1_score": 0.7,
+                "roc_auc": 0.8448928121059268,
+                "confusion_matrix": [
+                    [
+                        48,
+                        13
+                    ],
+                    [
+                        11,
+                        28
+                    ]
+                ]
+            }
+        },
+        "fedavg_statistics": {
+            "mean_accuracy": 0.76,
+            "accuracy_variance": 0.0006,
+            "accuracy_std": 0.0245,
+            "min_accuracy": 0.73,
+            "max_accuracy": 0.79,
+            "accuracy_gap": 0.06,
+            "best_hospital_accuracy": "hospital_1",
+            "worst_hospital_accuracy": "hospital_2",
+            "mean_f1": 0.7503,
+            "f1_variance": 0.003196,
+            "f1_std": 0.0565,
+            "min_f1": 0.7,
+            "max_f1": 0.8293,
+            "f1_gap": 0.1293,
+            "best_hospital_f1": "hospital_1",
+            "worst_hospital_f1": "hospital_3"
+        },
+        "fedprox_clients": {
+            "hospital_1": {
+                "accuracy": 0.79,
+                "precision": 0.8793103448275862,
+                "recall": 0.7846153846153846,
+                "f1_score": 0.8292682926829268,
+                "roc_auc": 0.8470329670329672,
+                "confusion_matrix": [
+                    [
+                        28,
+                        7
+                    ],
+                    [
+                        14,
+                        51
+                    ]
+                ]
+            },
+            "hospital_2": {
+                "accuracy": 0.72,
+                "precision": 0.7391304347826086,
+                "recall": 0.68,
+                "f1_score": 0.7083333333333334,
+                "roc_auc": 0.8528,
+                "confusion_matrix": [
+                    [
+                        38,
+                        12
+                    ],
+                    [
+                        16,
+                        34
+                    ]
+                ]
+            },
+            "hospital_3": {
+                "accuracy": 0.76,
+                "precision": 0.6829268292682927,
+                "recall": 0.717948717948718,
+                "f1_score": 0.7,
+                "roc_auc": 0.8440521227406472,
+                "confusion_matrix": [
+                    [
+                        48,
+                        13
+                    ],
+                    [
+                        11,
+                        28
+                    ]
+                ]
+            }
+        },
+        "fedprox_statistics": {
+            "mean_accuracy": 0.7567,
+            "accuracy_variance": 0.000822,
+            "accuracy_std": 0.0287,
+            "min_accuracy": 0.72,
+            "max_accuracy": 0.79,
+            "accuracy_gap": 0.07,
+            "best_hospital_accuracy": "hospital_1",
+            "worst_hospital_accuracy": "hospital_2",
+            "mean_f1": 0.7459,
+            "f1_variance": 0.003489,
+            "f1_std": 0.0591,
+            "min_f1": 0.7,
+            "max_f1": 0.8293,
+            "f1_gap": 0.1293,
+            "best_hospital_f1": "hospital_1",
+            "worst_hospital_f1": "hospital_3"
+        }
+    },
+    "communication_and_runtime": {
+        "parameter_count": 57,
+        "parameter_bytes": 456,
+        "total_communication_bytes": 13680,
+        "fedavg_training_time_seconds": 0.108,
+        "fedprox_training_time_seconds": 0.1416,
+        "fedavg_final_loss": 0.457,
+        "fedprox_final_loss": 0.4583
+    },
+    "comparison_table": [
+        {
+            "Metric Category": "Central Holdout Evaluation (300 records)",
+            "Metric": "Accuracy",
+            "FedAvg (mu=0)": 0.76,
+            "FedProx (mu=0.01)": 0.7567,
+            "Delta (FedProx - FedAvg)": -0.0033
+        },
+        {
+            "Metric Category": "Central Holdout Evaluation (300 records)",
+            "Metric": "Precision",
+            "FedAvg (mu=0)": 0.7808,
+            "FedProx (mu=0.01)": 0.7793,
+            "Delta (FedProx - FedAvg)": -0.0015
+        },
+        {
+            "Metric Category": "Central Holdout Evaluation (300 records)",
+            "Metric": "Recall",
+            "FedAvg (mu=0)": 0.7403,
+            "FedProx (mu=0.01)": 0.7338,
+            "Delta (FedProx - FedAvg)": -0.0065
+        },
+        {
+            "Metric Category": "Central Holdout Evaluation (300 records)",
+            "Metric": "F1-Score",
+            "FedAvg (mu=0)": 0.76,
+            "FedProx (mu=0.01)": 0.7559,
+            "Delta (FedProx - FedAvg)": -0.0041
+        },
+        {
+            "Metric Category": "Central Holdout Evaluation (300 records)",
+            "Metric": "ROC-AUC",
+            "FedAvg (mu=0)": 0.8501,
+            "FedProx (mu=0.01)": 0.849,
+            "Delta (FedProx - FedAvg)": -0.0011
+        },
+        {
+            "Metric Category": "Client Robustness & Fairness (100 records / node)",
+            "Metric": "Mean Client Accuracy",
+            "FedAvg (mu=0)": 0.76,
+            "FedProx (mu=0.01)": 0.7567,
+            "Delta (FedProx - FedAvg)": -0.0033
+        },
+        {
+            "Metric Category": "Client Robustness & Fairness (100 records / node)",
+            "Metric": "Accuracy Variance",
+            "FedAvg (mu=0)": 0.0006,
+            "FedProx (mu=0.01)": 0.000822,
+            "Delta (FedProx - FedAvg)": 0.000222
+        },
+        {
+            "Metric Category": "Client Robustness & Fairness (100 records / node)",
+            "Metric": "Accuracy Standard Deviation",
+            "FedAvg (mu=0)": 0.0245,
+            "FedProx (mu=0.01)": 0.0287,
+            "Delta (FedProx - FedAvg)": 0.0042
+        },
+        {
+            "Metric Category": "Client Robustness & Fairness (100 records / node)",
+            "Metric": "Disparity Gap (Best - Worst Node)",
+            "FedAvg (mu=0)": 0.06,
+            "FedProx (mu=0.01)": 0.07,
+            "Delta (FedProx - FedAvg)": 0.01
+        },
+        {
+            "Metric Category": "Client Robustness & Fairness (100 records / node)",
+            "Metric": "Hospital 1 Accuracy (65% High Risk)",
+            "FedAvg (mu=0)": 0.79,
+            "FedProx (mu=0.01)": 0.79,
+            "Delta (FedProx - FedAvg)": 0.0
+        },
+        {
+            "Metric Category": "Client Robustness & Fairness (100 records / node)",
+            "Metric": "Hospital 2 Accuracy (50% Balanced)",
+            "FedAvg (mu=0)": 0.73,
+            "FedProx (mu=0.01)": 0.72,
+            "Delta (FedProx - FedAvg)": -0.01
+        },
+        {
+            "Metric Category": "Client Robustness & Fairness (100 records / node)",
+            "Metric": "Hospital 3 Accuracy (39% Low Risk)",
+            "FedAvg (mu=0)": 0.76,
+            "FedProx (mu=0.01)": 0.76,
+            "Delta (FedProx - FedAvg)": 0.0
+        },
+        {
+            "Metric Category": "Convergence & Computational Efficiency",
+            "Metric": "Final Average Local Loss",
+            "FedAvg (mu=0)": 0.457,
+            "FedProx (mu=0.01)": 0.4583,
+            "Delta (FedProx - FedAvg)": 0.0013
+        },
+        {
+            "Metric Category": "Convergence & Computational Efficiency",
+            "Metric": "Total Experiment Time (seconds)",
+            "FedAvg (mu=0)": 0.108,
+            "FedProx (mu=0.01)": 0.1416,
+            "Delta (FedProx - FedAvg)": 0.0336
+        },
+        {
+            "Metric Category": "Communication Footprint",
+            "Metric": "Model Parameters Count",
+            "FedAvg (mu=0)": 57,
+            "FedProx (mu=0.01)": 57,
+            "Delta (FedProx - FedAvg)": 0
+        },
+        {
+            "Metric Category": "Communication Footprint",
+            "Metric": "Total Communication Volume (Bytes)",
+            "FedAvg (mu=0)": 13680,
+            "FedProx (mu=0.01)": 13680,
+            "Delta (FedProx - FedAvg)": 0
+        }
+    ]
+}

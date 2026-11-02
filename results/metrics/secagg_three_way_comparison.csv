@@ -1,0 +1,13 @@
+Metric Category,Metric,FedAvg,FedProx,FedAvg with SecAgg,Algorithmic vs Privacy Distinction
+Central Holdout Evaluation (300 records),Accuracy,0.76,0.7567,0.76,Secure Aggregation preserves exact FedAvg accuracy
+Central Holdout Evaluation (300 records),Precision,0.7808,0.7793,0.7808,Pairwise masks cancel out coordinate-wise
+Central Holdout Evaluation (300 records),Recall,0.7403,0.7338,0.7403,No utility loss from cryptographic masking
+Central Holdout Evaluation (300 records),F1-Score,0.76,0.7559,0.76,Identical diagnostic sensitivity
+Central Holdout Evaluation (300 records),ROC-AUC,0.8501,0.849,0.8501,Identical discriminatory power
+Client Robustness (100 records / node),Mean Client Accuracy,0.76,0.7567,0.76,Robustness across Non-IID clients is preserved
+Client Robustness (100 records / node),Accuracy Variance,0.0006,0.000822,0.0006,Client dispersion unaffected by masking
+Computational Latency,Total Experiment Time (seconds),0.0941,0.1268,0.0923,SecAgg adds minor CPU time for CSPRNG & masking
+Computational Latency,Final Average Local Loss,0.457,0.4583,0.457,Loss convergence matches FedAvg exactly
+Communication Footprint,Model Parameters Count,57,57,57,Identical 57-parameter neural network
+Communication Footprint,Total Traffic Volume (Bytes),13680,13680,15920,+2240 Bytes (+16.4%) simulated protocol overhead
+Privacy Guarantee,Plaintext Update Access,Plaintext exposed to coordinator,Plaintext exposed to coordinator,Zero plaintext exposure (Masked in Z_q),Cryptographic confidentiality against honest-but-curious coordinator

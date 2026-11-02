@@ -1,0 +1,16 @@
+{
+    "mean": {
+        "age": 50.24,
+        "blood_pressure": 124.486,
+        "glucose_level": 108.70579999999998,
+        "bmi": 26.541300000000003,
+        "cholesterol_level": 197.2911
+    },
+    "std": {
+        "age": 11.696118980208743,
+        "blood_pressure": 14.738511041068827,
+        "glucose_level": 24.401642291175946,
+        "bmi": 4.613190418336949,
+        "cholesterol_level": 31.525156086152155
+    }
+}

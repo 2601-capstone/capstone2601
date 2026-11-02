@@ -1,0 +1,8 @@
+numpy
+pandas
+scikit-learn
+matplotlib
+streamlit
+firebase-admin
+python-dotenv
+torch

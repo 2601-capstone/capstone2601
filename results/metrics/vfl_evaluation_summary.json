@@ -1,0 +1,195 @@
+{
+    "algorithm": "Vertical Federated Learning",
+    "paradigm": "VFL (SplitNN)",
+    "feature_ownership": {
+        "hospital_A": [
+            "age",
+            "blood_pressure"
+        ],
+        "hospital_B": [
+            "glucose_level",
+            "bmi"
+        ],
+        "hospital_C": [
+            "cholesterol_level"
+        ]
+    },
+    "label_owner": "coordinator",
+    "experiment_configuration": {
+        "epochs": 50,
+        "batch_size": 32,
+        "learning_rate": 0.05,
+        "random_seed": 42
+    },
+    "model_architecture": {
+        "type": "VFL Split Neural Network",
+        "bottom_models": {
+            "hospital_A": {
+                "features": [
+                    "age",
+                    "blood_pressure"
+                ],
+                "architecture": "2 -> 4 (ReLU)"
+            },
+            "hospital_B": {
+                "features": [
+                    "glucose_level",
+                    "bmi"
+                ],
+                "architecture": "2 -> 4 (ReLU)"
+            },
+            "hospital_C": {
+                "features": [
+                    "cholesterol_level"
+                ],
+                "architecture": "1 -> 4 (ReLU)"
+            }
+        },
+        "top_model": {
+            "fused_input_dim": 12,
+            "output_dim": 1,
+            "architecture": "12 -> 1 (Sigmoid)"
+        },
+        "parameters": {
+            "total_parameters": 45,
+            "top_model_parameters": 13,
+            "bottom_models": {
+                "hospital_A": 12,
+                "hospital_B": 12,
+                "hospital_C": 8
+            }
+        }
+    },
+    "central_evaluation": {
+        "accuracy": 0.85,
+        "precision": 0.8609271523178808,
+        "recall": 0.8441558441558441,
+        "f1_score": 0.8524590163934426,
+        "roc_auc": 0.9430261519302615,
+        "confusion_matrix": [
+            [
+                125,
+                21
+            ],
+            [
+                24,
+                130
+            ]
+        ],
+        "total_samples": 300
+    },
+    "training_latency": {
+        "total_seconds": 0.1864,
+        "final_loss": 0.285274
+    },
+    "communication_analysis": {
+        "paradigm": "Vertical Federated Learning (SplitNN)",
+        "num_parties": 3,
+        "num_samples": 1200,
+        "epochs": 50,
+        "total_embedding_dim": 12,
+        "bytes_per_number": 8,
+        "psi_token_bytes": 16,
+        "parameter_transfer_bytes": 0,
+        "forward_bytes_per_epoch": 115200,
+        "total_forward_bytes": 5760000,
+        "total_forward_kb": 5625.0,
+        "backward_bytes_per_epoch": 115200,
+        "total_backward_bytes": 5760000,
+        "total_backward_kb": 5625.0,
+        "training_traffic_bytes_per_epoch": 230400,
+        "total_training_traffic_bytes": 11520000,
+        "total_training_traffic_kb": 11250.0,
+        "total_training_traffic_mb": 10.9863,
+        "psi_alignment_overhead_bytes": 57600,
+        "psi_alignment_overhead_kb": 56.25,
+        "grand_total_communication_bytes": 11577600,
+        "grand_total_communication_kb": 11306.25,
+        "grand_total_communication_mb": 11.0413,
+        "party_forward_breakdown": {
+            "hospital_A": {
+                "embedding_dim": 4,
+                "bytes_per_epoch": 38400,
+                "total_bytes": 1920000,
+                "total_kb": 1875.0
+            },
+            "hospital_B": {
+                "embedding_dim": 4,
+                "bytes_per_epoch": 38400,
+                "total_bytes": 1920000,
+                "total_kb": 1875.0
+            },
+            "hospital_C": {
+                "embedding_dim": 4,
+                "bytes_per_epoch": 38400,
+                "total_bytes": 1920000,
+                "total_kb": 1875.0
+            }
+        },
+        "party_backward_breakdown": {
+            "hospital_A": {
+                "gradient_dim": 4,
+                "bytes_per_epoch": 38400,
+                "total_bytes": 1920000,
+                "total_kb": 1875.0
+            },
+            "hospital_B": {
+                "gradient_dim": 4,
+                "bytes_per_epoch": 38400,
+                "total_bytes": 1920000,
+                "total_kb": 1875.0
+            },
+            "hospital_C": {
+                "gradient_dim": 4,
+                "bytes_per_epoch": 38400,
+                "total_bytes": 1920000,
+                "total_kb": 1875.0
+            }
+        },
+        "assumptions": {
+            "parameter_transfer": "0 Bytes (Model parameters remain local/stationary on feature-owning parties and coordinator).",
+            "forward_traffic": "Intermediate cut-layer embeddings: N=1200 records x sum(d_k)=12 floats x 8B x 50 epochs.",
+            "backward_traffic": "Cut-layer loss gradients dL/dH_k: N=1200 records x sum(d_k)=12 floats x 8B x 50 epochs.",
+            "psi_alignment": "One-time simulated PSI alignment: 3 parties x 1200 samples x 16B hash tokens.",
+            "measurement_mode": "Simulated network payload sizing based on mathematical tensor exchange (no physical network sockets)."
+        }
+    },
+    "comparison_table": [
+        {
+            "Paradigm": "Horizontal Federated Learning (HFL)",
+            "Algorithm": "FedAvg",
+            "Accuracy": 0.76,
+            "F1-Score": 0.76,
+            "Parameters": 57,
+            "Communication Traffic (Bytes)": 13680,
+            "Data Partition Mode": "Disjoint patients, shared complete features"
+        },
+        {
+            "Paradigm": "Horizontal Federated Learning (HFL)",
+            "Algorithm": "FedProx (mu=0.01)",
+            "Accuracy": 0.7567,
+            "F1-Score": 0.7559,
+            "Parameters": 57,
+            "Communication Traffic (Bytes)": 13680,
+            "Data Partition Mode": "Disjoint patients, shared complete features"
+        },
+        {
+            "Paradigm": "Horizontal Federated Learning (HFL)",
+            "Algorithm": "FedAvg with SecAgg",
+            "Accuracy": 0.76,
+            "F1-Score": 0.76,
+            "Parameters": 57,
+            "Communication Traffic (Bytes)": 15920,
+            "Data Partition Mode": "Disjoint patients, masked parameter aggregation"
+        },
+        {
+            "Paradigm": "Vertical Federated Learning (VFL)",
+            "Algorithm": "VFL SplitNN",
+            "Accuracy": 0.85,
+            "F1-Score": 0.8525,
+            "Parameters": 45,
+            "Communication Traffic (Bytes)": 11520000,
+            "Data Partition Mode": "Aligned patients (PSI), disjoint clinical features"
+        }
+    ]
+}

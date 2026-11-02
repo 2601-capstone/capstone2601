@@ -1,0 +1,227 @@
+{
+    "experiment_configuration": {
+        "num_rounds": 5,
+        "local_epochs": 10,
+        "batch_size": 32,
+        "learning_rate": 0.01,
+        "fedprox_mu": 0.01,
+        "random_seed": 42,
+        "protocol_name": "Pairwise Additive Masking with Finite-Field Quantization (Bonawitz et al. Simulation)"
+    },
+    "central_evaluation": {
+        "fedavg": {
+            "accuracy": 0.76,
+            "precision": 0.7808219178082192,
+            "recall": 0.7402597402597403,
+            "f1_score": 0.76,
+            "roc_auc": 0.8500711617149973,
+            "confusion_matrix": [
+                [
+                    114,
+                    32
+                ],
+                [
+                    40,
+                    114
+                ]
+            ]
+        },
+        "fedprox": {
+            "accuracy": 0.7566666666666667,
+            "precision": 0.7793103448275862,
+            "recall": 0.7337662337662337,
+            "f1_score": 0.7558528428093646,
+            "roc_auc": 0.848959259918164,
+            "confusion_matrix": [
+                [
+                    114,
+                    32
+                ],
+                [
+                    41,
+                    113
+                ]
+            ]
+        },
+        "fedavg_secagg": {
+            "accuracy": 0.76,
+            "precision": 0.7808219178082192,
+            "recall": 0.7402597402597403,
+            "f1_score": 0.76,
+            "roc_auc": 0.8500711617149973,
+            "confusion_matrix": [
+                [
+                    114,
+                    32
+                ],
+                [
+                    40,
+                    114
+                ]
+            ]
+        }
+    },
+    "client_robustness": {
+        "fedavg": {
+            "mean_accuracy": 0.76,
+            "accuracy_variance": 0.0006,
+            "accuracy_std": 0.0245,
+            "min_accuracy": 0.73,
+            "max_accuracy": 0.79,
+            "accuracy_gap": 0.06,
+            "best_hospital_accuracy": "hospital_1",
+            "worst_hospital_accuracy": "hospital_2",
+            "mean_f1": 0.7503,
+            "f1_variance": 0.003196,
+            "f1_std": 0.0565,
+            "min_f1": 0.7,
+            "max_f1": 0.8293,
+            "f1_gap": 0.1293,
+            "best_hospital_f1": "hospital_1",
+            "worst_hospital_f1": "hospital_3"
+        },
+        "fedprox": {
+            "mean_accuracy": 0.7567,
+            "accuracy_variance": 0.000822,
+            "accuracy_std": 0.0287,
+            "min_accuracy": 0.72,
+            "max_accuracy": 0.79,
+            "accuracy_gap": 0.07,
+            "best_hospital_accuracy": "hospital_1",
+            "worst_hospital_accuracy": "hospital_2",
+            "mean_f1": 0.7459,
+            "f1_variance": 0.003489,
+            "f1_std": 0.0591,
+            "min_f1": 0.7,
+            "max_f1": 0.8293,
+            "f1_gap": 0.1293,
+            "best_hospital_f1": "hospital_1",
+            "worst_hospital_f1": "hospital_3"
+        },
+        "fedavg_secagg": {
+            "mean_accuracy": 0.76,
+            "accuracy_variance": 0.0006,
+            "accuracy_std": 0.0245,
+            "min_accuracy": 0.73,
+            "max_accuracy": 0.79,
+            "accuracy_gap": 0.06,
+            "best_hospital_accuracy": "hospital_1",
+            "worst_hospital_accuracy": "hospital_2",
+            "mean_f1": 0.7503,
+            "f1_variance": 0.003196,
+            "f1_std": 0.0565,
+            "min_f1": 0.7,
+            "max_f1": 0.8293,
+            "f1_gap": 0.1293,
+            "best_hospital_f1": "hospital_1",
+            "worst_hospital_f1": "hospital_3"
+        }
+    },
+    "communication_and_runtime": {
+        "parameter_count": 57,
+        "base_communication_bytes": 13680,
+        "secagg_communication_bytes": 15920,
+        "secagg_overhead_bytes": 2240,
+        "fedavg_time_seconds": 0.0941,
+        "fedprox_time_seconds": 0.1268,
+        "secagg_time_seconds": 0.0923
+    },
+    "comparison_table": [
+        {
+            "Metric Category": "Central Holdout Evaluation (300 records)",
+            "Metric": "Accuracy",
+            "FedAvg": 0.76,
+            "FedProx": 0.7567,
+            "FedAvg with SecAgg": 0.76,
+            "Algorithmic vs Privacy Distinction": "Secure Aggregation preserves exact FedAvg accuracy"
+        },
+        {
+            "Metric Category": "Central Holdout Evaluation (300 records)",
+            "Metric": "Precision",
+            "FedAvg": 0.7808,
+            "FedProx": 0.7793,
+            "FedAvg with SecAgg": 0.7808,
+            "Algorithmic vs Privacy Distinction": "Pairwise masks cancel out coordinate-wise"
+        },
+        {
+            "Metric Category": "Central Holdout Evaluation (300 records)",
+            "Metric": "Recall",
+            "FedAvg": 0.7403,
+            "FedProx": 0.7338,
+            "FedAvg with SecAgg": 0.7403,
+            "Algorithmic vs Privacy Distinction": "No utility loss from cryptographic masking"
+        },
+        {
+            "Metric Category": "Central Holdout Evaluation (300 records)",
+            "Metric": "F1-Score",
+            "FedAvg": 0.76,
+            "FedProx": 0.7559,
+            "FedAvg with SecAgg": 0.76,
+            "Algorithmic vs Privacy Distinction": "Identical diagnostic sensitivity"
+        },
+        {
+            "Metric Category": "Central Holdout Evaluation (300 records)",
+            "Metric": "ROC-AUC",
+            "FedAvg": 0.8501,
+            "FedProx": 0.849,
+            "FedAvg with SecAgg": 0.8501,
+            "Algorithmic vs Privacy Distinction": "Identical discriminatory power"
+        },
+        {
+            "Metric Category": "Client Robustness (100 records / node)",
+            "Metric": "Mean Client Accuracy",
+            "FedAvg": 0.76,
+            "FedProx": 0.7567,
+            "FedAvg with SecAgg": 0.76,
+            "Algorithmic vs Privacy Distinction": "Robustness across Non-IID clients is preserved"
+        },
+        {
+            "Metric Category": "Client Robustness (100 records / node)",
+            "Metric": "Accuracy Variance",
+            "FedAvg": 0.0006,
+            "FedProx": 0.000822,
+            "FedAvg with SecAgg": 0.0006,
+            "Algorithmic vs Privacy Distinction": "Client dispersion unaffected by masking"
+        },
+        {
+            "Metric Category": "Computational Latency",
+            "Metric": "Total Experiment Time (seconds)",
+            "FedAvg": 0.0941,
+            "FedProx": 0.1268,
+            "FedAvg with SecAgg": 0.0923,
+            "Algorithmic vs Privacy Distinction": "SecAgg adds minor CPU time for CSPRNG & masking"
+        },
+        {
+            "Metric Category": "Computational Latency",
+            "Metric": "Final Average Local Loss",
+            "FedAvg": 0.457,
+            "FedProx": 0.4583,
+            "FedAvg with SecAgg": 0.457,
+            "Algorithmic vs Privacy Distinction": "Loss convergence matches FedAvg exactly"
+        },
+        {
+            "Metric Category": "Communication Footprint",
+            "Metric": "Model Parameters Count",
+            "FedAvg": 57,
+            "FedProx": 57,
+            "FedAvg with SecAgg": 57,
+            "Algorithmic vs Privacy Distinction": "Identical 57-parameter neural network"
+        },
+        {
+            "Metric Category": "Communication Footprint",
+            "Metric": "Total Traffic Volume (Bytes)",
+            "FedAvg": 13680,
+            "FedProx": 13680,
+            "FedAvg with SecAgg": 15920,
+            "Algorithmic vs Privacy Distinction": "+2240 Bytes (+16.4%) simulated protocol overhead"
+        },
+        {
+            "Metric Category": "Privacy Guarantee",
+            "Metric": "Plaintext Update Access",
+            "FedAvg": "Plaintext exposed to coordinator",
+            "FedProx": "Plaintext exposed to coordinator",
+            "FedAvg with SecAgg": "Zero plaintext exposure (Masked in Z_q)",
+            "Algorithmic vs Privacy Distinction": "Cryptographic confidentiality against honest-but-curious coordinator"
+        }
+    ]
+}

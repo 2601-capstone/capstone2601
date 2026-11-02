@@ -1,0 +1,17 @@
+Metric Category,Metric,FedAvg (mu=0),FedProx (mu=0.01),Delta (FedProx - FedAvg)
+Central Holdout Evaluation (300 records),Accuracy,0.76,0.7567,-0.0033
+Central Holdout Evaluation (300 records),Precision,0.7808,0.7793,-0.0015
+Central Holdout Evaluation (300 records),Recall,0.7403,0.7338,-0.0065
+Central Holdout Evaluation (300 records),F1-Score,0.76,0.7559,-0.0041
+Central Holdout Evaluation (300 records),ROC-AUC,0.8501,0.849,-0.0011
+Client Robustness & Fairness (100 records / node),Mean Client Accuracy,0.76,0.7567,-0.0033
+Client Robustness & Fairness (100 records / node),Accuracy Variance,0.0006,0.000822,0.000222
+Client Robustness & Fairness (100 records / node),Accuracy Standard Deviation,0.0245,0.0287,0.0042
+Client Robustness & Fairness (100 records / node),Disparity Gap (Best - Worst Node),0.06,0.07,0.01
+Client Robustness & Fairness (100 records / node),Hospital 1 Accuracy (65% High Risk),0.79,0.79,0.0
+Client Robustness & Fairness (100 records / node),Hospital 2 Accuracy (50% Balanced),0.73,0.72,-0.01
+Client Robustness & Fairness (100 records / node),Hospital 3 Accuracy (39% Low Risk),0.76,0.76,0.0
+Convergence & Computational Efficiency,Final Average Local Loss,0.457,0.4583,0.0013
+Convergence & Computational Efficiency,Total Experiment Time (seconds),0.108,0.1416,0.0336
+Communication Footprint,Model Parameters Count,57.0,57.0,0.0
+Communication Footprint,Total Communication Volume (Bytes),13680.0,13680.0,0.0

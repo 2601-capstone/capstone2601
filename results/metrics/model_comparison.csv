@@ -1,0 +1,6 @@
+Model,Accuracy,Precision,Recall,F1_Score,ROC_AUC
+Federated Global Model,0.76,0.7808,0.7403,0.76,0.8501
+Centralized Baseline,0.8733,0.8973,0.8506,0.8733,0.9341
+Hospital 1 Local Baseline,0.7333,0.6888,0.8766,0.7714,0.8532
+Hospital 2 Local Baseline,0.74,0.7836,0.6818,0.7292,0.841
+Hospital 3 Local Baseline,0.6867,0.875,0.4545,0.5983,0.8378

@@ -1,0 +1,5 @@
+model,parameters,size_kb,training_time_sec,test_loss,accuracy,precision,recall,f1_score,roc_auc
+MLP Baseline (Flattened),993,3.879,2.577,0.3455,0.8467,0.8286,0.9457,0.8832,0.9249
+Pure 1D CNN,273,1.066,1.45,0.4975,0.76,0.7857,0.837,0.8105,0.8281
+Pure LSTM,1489,5.816,1.685,0.4567,0.7933,0.8211,0.8478,0.8342,0.8628
+Hybrid CNN-LSTM,2449,9.566,2.388,0.4571,0.8133,0.8556,0.837,0.8462,0.8628
