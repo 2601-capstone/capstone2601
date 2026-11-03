@@ -1,0 +1,128 @@
+{
+    "experiment": "LEAF-FL (Lead-time & Equity-Aware Federated Learning)",
+    "date_evaluated": "2026-11-03 18:38:34",
+    "best_leaf_metrics": {
+        "accuracy": 0.76,
+        "precision": 0.66,
+        "recall": 0.6346153846153846,
+        "specificity": 0.826530612244898,
+        "f1_score": 0.6470588235294118,
+        "roc_auc": 0.7933673469387755,
+        "pr_auc": 0.7754446821472788,
+        "confusion_matrix": [
+            [
+                81,
+                17
+            ],
+            [
+                19,
+                33
+            ]
+        ],
+        "total_samples": 150,
+        "actual_positives": 52,
+        "actual_negatives": 98,
+        "true_positives": 33,
+        "false_positives": 17,
+        "false_negatives": 19,
+        "true_negatives": 81,
+        "missed_event_rate": 0.36538461538461536,
+        "false_alarm_rate": 0.17346938775510204,
+        "late_warning_rate": 0.019230769230769232,
+        "avg_lead_time_months": 6.484848484848484,
+        "median_lead_time_months": 6.0,
+        "pct_detected_before_event": 63.46153846153846,
+        "lead_times_distribution": [
+            5,
+            7,
+            6,
+            7,
+            10,
+            7,
+            7,
+            10,
+            7,
+            6,
+            8,
+            6,
+            6,
+            6,
+            7,
+            4,
+            6,
+            1,
+            9,
+            6,
+            6,
+            5,
+            6,
+            6,
+            6,
+            7,
+            8,
+            6,
+            5,
+            7,
+            7,
+            7,
+            7
+        ]
+    },
+    "equity_metrics": {
+        "worst_hospital_recall": 0.5,
+        "worst_hospital_auroc": 0.7638888888888888,
+        "max_hospital_recall_gap": 0.1842105263157895,
+        "std_hospital_recall": 0.0830121027285286,
+        "hospital_recalls": {
+            "hospital_1": 0.6666666666666666,
+            "hospital_2": 0.6842105263157895,
+            "hospital_3": 0.5
+        }
+    },
+    "comparison": [
+        {
+            "Method / Algorithm": "Local-Only CNN-LSTM (Avg)",
+            "Accuracy": 0.7378,
+            "F1-Score": 0.6394,
+            "Recall (Sensitivity)": 0.6795,
+            "ROC-AUC": 0.7919,
+            "Avg Lead Time (Months)": 6.98,
+            "Missed Event Rate": 0.3205,
+            "Worst-Hospital Recall": 0.5,
+            "Max Recall Gap": 0.1842
+        },
+        {
+            "Method / Algorithm": "Standard FedAvg (lambda=0.0)",
+            "Accuracy": 0.7467,
+            "F1-Score": 0.6346,
+            "Recall (Sensitivity)": 0.6346,
+            "ROC-AUC": 0.7855,
+            "Avg Lead Time (Months)": 6.61,
+            "Missed Event Rate": 0.3654,
+            "Worst-Hospital Recall": 0.5,
+            "Max Recall Gap": 0.2368
+        },
+        {
+            "Method / Algorithm": "FedProx Baseline (mu=0.01)",
+            "Accuracy": 0.7933,
+            "F1-Score": 0.6804,
+            "Recall (Sensitivity)": 0.6346,
+            "ROC-AUC": 0.7938,
+            "Avg Lead Time (Months)": 6.36,
+            "Missed Event Rate": 0.3654,
+            "Worst-Hospital Recall": 0.5,
+            "Max Recall Gap": 0.1842
+        },
+        {
+            "Method / Algorithm": "Proposed LEAF-FL (lambda=0.50, tau=2.0)",
+            "Accuracy": 0.76,
+            "F1-Score": 0.6471,
+            "Recall (Sensitivity)": 0.6346,
+            "ROC-AUC": 0.7934,
+            "Avg Lead Time (Months)": 6.48,
+            "Missed Event Rate": 0.3654,
+            "Worst-Hospital Recall": 0.5,
+            "Max Recall Gap": 0.1842
+        }
+    ]
+}

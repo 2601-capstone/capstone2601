@@ -14,11 +14,11 @@
     "total_communication_mb": 0.007828,
     "average_communication_bytes_per_round": 2736.0,
     "average_communication_kb_per_round": 2.6719,
-    "total_training_time_seconds": 0.0359,
-    "total_aggregation_time_seconds": 0.000414,
-    "total_experiment_duration_seconds": 0.037,
-    "average_training_time_per_round_seconds": 0.012,
-    "average_round_duration_seconds": 0.0123,
+    "total_training_time_seconds": 0.0264,
+    "total_aggregation_time_seconds": 0.000405,
+    "total_experiment_duration_seconds": 0.0275,
+    "average_training_time_per_round_seconds": 0.0088,
+    "average_round_duration_seconds": 0.0092,
     "is_secure_aggregation": false,
     "total_secure_aggregation_overhead_bytes": 0,
     "per_round_metrics": [
@@ -28,9 +28,9 @@
             "download_bytes": 1368,
             "total_communication_bytes": 2736,
             "cumulative_communication_bytes": 2736,
-            "training_time_seconds": 0.0073,
-            "aggregation_time_seconds": 6e-05,
-            "round_duration_seconds": 0.0075
+            "training_time_seconds": 0.0085,
+            "aggregation_time_seconds": 0.000239,
+            "round_duration_seconds": 0.009
         },
         {
             "round": 2,
@@ -38,9 +38,9 @@
             "download_bytes": 1368,
             "total_communication_bytes": 2736,
             "cumulative_communication_bytes": 5472,
-            "training_time_seconds": 0.0114,
-            "aggregation_time_seconds": 0.000145,
-            "round_duration_seconds": 0.0118
+            "training_time_seconds": 0.0078,
+            "aggregation_time_seconds": 8.2e-05,
+            "round_duration_seconds": 0.0081
         },
         {
             "round": 3,
@@ -48,9 +48,9 @@
             "download_bytes": 1368,
             "total_communication_bytes": 2736,
             "cumulative_communication_bytes": 8208,
-            "training_time_seconds": 0.0172,
-            "aggregation_time_seconds": 0.000209,
-            "round_duration_seconds": 0.0177
+            "training_time_seconds": 0.0101,
+            "aggregation_time_seconds": 8.4e-05,
+            "round_duration_seconds": 0.0103
         }
     ],
     "layer_breakdown": {

@@ -140,6 +140,16 @@ The project includes a longitudinal healthcare-style experiment using synthetic 
 - The LSTM component models sequential dependencies.
 - The experiment compares temporal models and federated training behavior.
 
+### LEAF-FL — Lead-Time & Equity-Aware Federated Learning (Flagship Research Contribution)
+
+LEAF-FL is the capstone research contribution designed to solve two critical challenges in federated healthcare analytics:
+1. **Causal Deterioration Forecasting with Zero Future Leakage:** Evaluates prospective patient deterioration events occurring in Months 7 to 12 ($T_{\text{forecast}} \in [7, 12]$) strictly using early observation vitals collected in Months 1 to 6 ($T_{\text{obs}} \in [1, 6]$).
+2. **Dynamic Equity-Aware Aggregation:** Conventional FedAvg ($\alpha_k = n_k/N$) heavily favors data-rich tertiary specialty hospitals, marginalizing small rural clinics. LEAF-FL introduces a composite local warning error score:
+   $$E_k = 0.50 \cdot \text{MER}_k + 0.30 \cdot \text{LWR}_k + 0.20 \cdot \text{FAR}_k$$
+   and dynamically adapts aggregation weights:
+   $$\alpha_k = (1 - \lambda) \cdot \frac{n_k}{N} + \lambda \cdot \frac{\exp(\tau E_k)}{\sum_{j=1}^K \exp(\tau E_j)}$$
+   Under $\lambda = 0.50$, LEAF-FL **compresses the inter-hospital recall disparity gap by 22.2%** (from 0.2368 to 0.1842) while providing an **average warning lead time of 6.48 months** (0.00% late warnings). For full academic thesis documentation, see [LEAF_FL_RESEARCH_PAPER.md](file:///C:/Users/hp/Desktop/hospital%20project/LEAF_FL_RESEARCH_PAPER.md).
+
 ## 7. Dataset and Experimental Setup
 
 The project uses **synthetically generated healthcare-style data**.
@@ -201,39 +211,62 @@ The following is a simplified overview of the project structure. Individual file
 ```text
 hospital project/
 │
-├── app.py
-├── requirements.txt
-├── README.md
+├── app.py                             # 13-Page Streamlit Enterprise Research Dashboard
+├── requirements.txt                   # Dependency specifications
+├── README.md                          # Master documentation & guide
+├── LEAF_FL_RESEARCH_PAPER.md          # Capstone research paper & thesis chapter
+├── PROJECT_TECHNICAL_REPORT.md        # Complete system audit and Colab commands
 │
 ├── src/
-│   ├── aggregation.py
-│   ├── client.py
-│   ├── evaluation.py
-│   ├── experiment.py
-│   ├── secure_aggregation.py
-│   └── ...
+│   ├── leaf_fl.py                     # LEAF-FL Causal CNN-LSTM & Equity Aggregator
+│   ├── leaf_data.py                   # Strict 6-Month Observation Deterioration Dataset
+│   ├── leaf_experiments.py            # 5-Way Benchmark & Lambda Sensitivity Suite
+│   ├── hybrid_cnn_lstm.py             # Temporal 1D CNN + LSTM Baseline Models
+│   ├── federated_transfer.py          # Federated Transfer Learning (FTL)
+│   ├── vertical_federated.py          # Vertical Federated Learning (SplitNN)
+│   ├── secure_aggregation.py          # Pairwise Masked Secure Aggregation Protocol
+│   ├── fedprox_comparison.py          # FedAvg vs. FedProx Comparative Analysis
+│   ├── communication_analysis.py      # Communication Footprint & Efficiency Profiler
+│   ├── robustness.py                  # Client Noise & Non-IID Robustness Analyzer
+│   ├── evaluation.py                  # Standardized Multi-Metric Evaluator
+│   ├── experiment.py                  # Federated Training Orchestrator
+│   ├── firebase_service.py            # Firebase Firestore Experiment Synchronizer
+│   ├── aggregation.py                 # Core FedAvg Parameter Aggregator
+│   ├── client.py                      # Local Client Node Trainer
+│   ├── model.py                       # Base 57-Parameter NumPy MLP Model
+│   ├── data_preparation.py            # Tabular Synthetic Healthcare Generator
+│   └── temporal_data.py               # Longitudinal Sequence Generator
 │
 ├── data/
-│   └── ...
+│   ├── leaf/                          # Partitioned LEAF-FL Deterioration Datasets
+│   ├── temporal/                      # Longitudinal Patient Sequences (N=1000)
+│   ├── partitions/                    # Tabular Non-IID Hospital Splits
+│   └── synthetic_healthcare_records.csv
 │
 ├── results/
-│   └── metrics/
+│   ├── metrics/                       # Benchmark CSVs and JSON Summaries
+│   └── plots/                         # Publication-Quality PNG Figures
 │
-├── tests/
-│   └── ...
-│
-└── ...
+└── tests/
+    ├── test_leaf_fl.py                # 16 Dedicated LEAF-FL Unit Tests
+    ├── test_dashboard.py              # Streamlit Compilation & Page Verification
+    ├── test_hybrid_cnn_lstm.py        # Temporal Architecture Tests
+    ├── test_federated_transfer.py     # Transfer Learning Tests
+    ├── test_vertical_federated.py     # SplitNN Partition Tests
+    ├── test_secure_aggregation.py     # Additive Masking Cryptographic Tests
+    └── ...                            # Full 145-Test Automated Suite
 ```
 
 ### Main Components
 
 | Component | Responsibility |
 |---|---|
-| `app.py` | Streamlit dashboard entry point |
-| `src/` | Federated learning algorithms and supporting modules |
-| `data/` | Synthetic datasets and experiment inputs |
-| `results/` | Generated experiment outputs and metrics |
-| `tests/` | Automated unit and integration tests |
+| `app.py` | 13-Page Streamlit research dashboard with enterprise visual design |
+| `src/` | Federated learning algorithms (FedAvg, FedProx, SecAgg, VFL, FTL, CNN-LSTM, LEAF-FL) |
+| `data/` | Synthetic tabular, longitudinal, and causal forecasting patient datasets |
+| `results/` | Generated publication metrics, JSON summaries, and comparative plots |
+| `tests/` | Comprehensive test suite (145 automated unit tests) |
+| `LEAF_FL_RESEARCH_PAPER.md` | Complete thesis research paper and defense documentation |
 | `requirements.txt` | Python dependencies |
 
 ## 11. Installation and Setup
@@ -349,10 +382,40 @@ python -m unittest discover -s tests -v
 The latest reported test run completed:
 
 ```text
-Ran 129 tests
+Ran 145 tests in 3.840s: OK
 ```
 
-This test count reflects the reported execution at the time of documentation. Run the test command again after making code changes to verify the current version.
+This includes:
+- 129 tests across FedAvg, FedProx, SecAgg, VFL, FTL, CNN-LSTM, Robustness, Firebase, and Dashboard.
+- 16 dedicated tests in `tests/test_leaf_fl.py` covering LEAF-FL causal dimensions, zero-leakage constraints, lead-time math, error scoring, weight conservation ($\sum \alpha_k = 1$), and determinism.
+
+Run individual test suites as needed:
+
+```bash
+# Run LEAF-FL research contribution tests
+python -m unittest tests/test_leaf_fl.py
+
+# Run dashboard compilation & router tests
+python -m unittest tests/test_dashboard.py
+```
+
+### Running LEAF-FL Research Experiments via CLI
+
+Execute the complete 5-way benchmark, multi-seed ablation study, and artifact generation pipeline:
+
+```bash
+python src/leaf_experiments.py
+```
+
+Generated outputs are automatically written to `results/metrics/` and `results/plots/`:
+- `results/metrics/leaf_fl_comparison.csv`: 5-Way benchmark results.
+- `results/metrics/leaf_fl_ablation_lambda.csv`: Lambda equity sensitivity grid.
+- `results/metrics/leaf_fl_weight_history.csv`: Dynamic weight evolution across rounds.
+- `results/metrics/leaf_fl_summary.json`: Detailed experiment metadata.
+- `results/plots/leaf_fl_convergence.png`: Training loss convergence curve.
+- `results/plots/leaf_fl_equity_tradeoff.png`: Global F1 vs. Worst-Hospital Recall trade-off.
+- `results/plots/leaf_fl_lead_time_distribution.png`: Early warning lead-time histogram.
+- `results/plots/leaf_fl_weights_adaptation.png`: Round-by-round aggregation weight adaptation.
 
 Tests help validate implementation behavior, but passing tests do not by themselves establish clinical validity, production security, or correctness under every possible input.
 

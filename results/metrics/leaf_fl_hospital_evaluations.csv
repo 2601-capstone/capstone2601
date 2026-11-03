@@ -1,0 +1,4 @@
+Hospital ID,Facility,Validation Accuracy,Validation Recall,Validation F1,Validation ROC-AUC,Missed Event Rate,Late Warning Rate,False Alarm Rate,Avg Lead Time (Months)
+hospital_1,Hospital 1 (Specialty Center),0.75,0.6667,0.6809,0.7639,0.3333,0.0,0.1944,6.75
+hospital_2,Hospital 2 (Community Hospital),0.68,0.6842,0.619,0.7691,0.3158,0.0,0.3226,5.85
+hospital_3,Hospital 3 (Rural Clinic),0.8,0.5,0.5,0.8681,0.5,0.0,0.125,7.0

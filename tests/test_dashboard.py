@@ -34,6 +34,7 @@ class TestStreamlitDashboard(unittest.TestCase):
         self.assertIn("render_vertical_federated", content)
         self.assertIn("render_federated_transfer", content)
         self.assertIn("render_hybrid_cnn_lstm", content)
+        self.assertIn("render_leaf_fl", content)
         self.assertIn("render_experiment_history", content)
 
         # Check core integration hooks
@@ -54,6 +55,7 @@ class TestStreamlitDashboard(unittest.TestCase):
         self.assertIn("train_federated_cnn_lstm", content)
         self.assertIn("calculate_cnn_lstm_communication_volume", content)
         self.assertIn("build_cnn_lstm_experiment_record", content)
+        self.assertIn("run_leaf_fl_experiment", content)
         self.assertIn("check_firestore_connection", content)
         self.assertIn("save_experiment", content)
 

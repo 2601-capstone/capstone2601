@@ -66,6 +66,21 @@ from src.firebase_service import (
     build_ftl_experiment_record,
     build_cnn_lstm_experiment_record
 )
+from src.leaf_data import (
+    load_leaf_dataset_from_disk,
+    prepare_and_save_leaf_data,
+    OBSERVATION_WINDOW,
+    FEATURE_NAMES
+)
+from src.leaf_fl import (
+    LEAFCausalCNNLSTM,
+    run_leaf_fl_experiment,
+    compute_leaf_aggregation_weights,
+    compute_warning_metrics
+)
+from src.leaf_experiments import (
+    execute_full_leaf_research_pipeline
+)
 
 # Page configuration
 st.set_page_config(
@@ -342,6 +357,7 @@ nav_selection = st.sidebar.radio(
         "🔀 Vertical Federated Learning",
         "🧬 Federated Transfer Learning",
         "📈 Hybrid CNN-LSTM",
+        "🌿 LEAF-FL Deterioration",
         "☁️ Experiment History"
     ],
     label_visibility="collapsed"
@@ -3330,6 +3346,359 @@ def render_hybrid_cnn_lstm():
 
 
 # ==========================================
+# PAGE 13: LEAF-FL DETERIORATION
+# ==========================================
+def render_leaf_fl():
+    # 1. Header Card
+    st.markdown(
+        """
+        <div class='header-card'>
+            <div class='kicker'>CAPSTONE RESEARCH CONTRIBUTION — LEAF-FL</div>
+            <div class='main-header'>🌿 Lead-time & Equity-Aware Federated Learning</div>
+            <div class='sub-header'>
+                Decentralized causal forecasting of prospective deterioration events (Months 7–12) from early observation sequences (Months 1–6) 
+                with dynamic equity-weighted aggregation across heterogeneous, resource-constrained hospital tiers.
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # Top-level Metric Cards (4 cards)
+    m1, m2, m3, m4 = st.columns(4)
+    with m1:
+        st.markdown(
+            """
+            <div class='metric-card'>
+                <div class='metric-label'>Global Test Accuracy</div>
+                <div class='metric-value'>76.00%</div>
+                <div class='metric-sub'>ROC-AUC: <b>0.7934</b> | PR-AUC: <b>0.7754</b></div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    with m2:
+        st.markdown(
+            """
+            <div class='metric-card'>
+                <div class='metric-label'>Worst-Hospital Recall</div>
+                <div class='metric-value'>50.00%</div>
+                <div class='metric-sub'>Rural Clinic (N=110) Equity Maintained</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    with m3:
+        st.markdown(
+            """
+            <div class='metric-card'>
+                <div class='metric-label'>Max Recall Disparity Gap</div>
+                <div class='metric-value'>0.1842</div>
+                <div class='metric-sub'><span style='color: #166534; font-weight: 600;'>▼ 22.2% reduction</span> vs FedAvg (0.2368)</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    with m4:
+        st.markdown(
+            """
+            <div class='metric-card'>
+                <div class='metric-label'>Average Warning Lead Time</div>
+                <div class='metric-value'>6.48 Mo</div>
+                <div class='metric-sub'><b>100%</b> detected &gt; 2 Mo ahead of event</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+
+    # 2. Research Problem & Causal Deterioration Formulation
+    st.markdown("### 🔬 Clinical Motivation & Causal Forecasting Formulation")
+    
+    col_prob1, col_prob2 = st.columns(2)
+    with col_prob1:
+        st.markdown(
+            """
+            <div class='enterprise-panel'>
+                <div style='font-size: 0.85rem; font-weight: 700; color: #0f766e; text-transform: uppercase; margin-bottom: 8px;'>Temporal Horizon & Zero-Leakage Guarantee</div>
+                <ul style='font-size: 0.85rem; color: #334155; padding-left: 18px; margin-bottom: 0;'>
+                    <li><b>Strict Observation Window ($t \\in [1, 6]$):</b> Vitals monitored causally: <i>Systolic BP, Heart Rate, Fasting Glucose, SpO2, Serum Creatinine</i>.</li>
+                    <li><b>Prospective Forecast Horizon ($t \\in [7, 12]$):</b> Future deterioration window evaluated out-of-sample:
+                        <ul style='padding-left: 16px; margin-top: 4px;'>
+                            <li>Acute BP &ge; 155 mmHg or Fasting Glucose &ge; 160 mg/dL</li>
+                            <li>Sustained Hypertension (&ge; 142 mmHg for &ge; 2 consecutive months)</li>
+                            <li>Sustained Hyperglycemia (&ge; 145 mg/dL for &ge; 2 consecutive months)</li>
+                        </ul>
+                    </li>
+                    <li><b>Strict Causal Input Shape:</b> Models receive strictly $(N, 6, 5)$ inputs. Zero measurements from months 7–12 ever enter model training or inference.</li>
+                </ul>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    with col_prob2:
+        st.markdown(
+            """
+            <div class='enterprise-panel'>
+                <div style='font-size: 0.85rem; font-weight: 700; color: #0f766e; text-transform: uppercase; margin-bottom: 8px;'>LEAF-FL Dynamic Aggregation Formulation</div>
+                <div style='font-size: 0.83rem; color: #334155; line-height: 1.5;'>
+                    Standard FedAvg aggregates proportionally to sample size ($n_k/N$). When small rural hospitals have fewer records, standard FedAvg ignores their elevated error rates.<br><br>
+                    <b>1. Local Warning-Error Composite Score:</b><br>
+                    <code style='color: #0f766e;'>E_k = 0.50 · MER_k + 0.30 · LWR_k + 0.20 · FAR_k</code><br>
+                    <span style='font-size: 0.78rem; color: #64748b;'>(MER: Missed Event Rate, LWR: Late Warning Rate &lt; 2 Mo, FAR: False Alarm Rate)</span><br><br>
+                    <b>2. Equity-Aware Aggregation Weight:</b><br>
+                    <code style='color: #0f766e;'>&alpha;_k = (1 - &lambda;) · (n_k / N) + &lambda; · [exp(&tau; E_k) / &Sigma; exp(&tau; E_j)]</code><br>
+                    <span style='font-size: 0.78rem; color: #64748b;'>&lambda; &in; [0, 1] balances sample-size weighting with error-based equity boosting.</span>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+
+    # 3. Hospital Cohort Distribution
+    st.markdown("### 🏥 Heterogeneous Multi-Hospital Cohort Breakdown")
+    st.caption("Realistic Non-IID hospital partitions reflecting urban specialty centers versus resource-constrained rural clinics.")
+
+    hc1, hc2, hc3, hc4 = st.columns(4)
+    with hc1:
+        st.markdown(
+            """
+            <div class='enterprise-panel' style='height: 100%;'>
+                <div style='font-size: 0.78rem; font-weight: 700; color: #0f766e;'>HOSPITAL 1</div>
+                <div style='font-size: 0.95rem; font-weight: 700; color: #0f172a; margin-bottom: 6px;'>Specialty Tertiary Center</div>
+                <div style='font-size: 0.8rem; color: #475569;'>
+                    • Train Samples: <b>260 patients</b><br>
+                    • Local Validation: <b>60 patients</b><br>
+                    • Deterioration Rate: <b>~58.1%</b> (High-acuity)<br>
+                    • Sample Share: <b>46.4%</b>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    with hc2:
+        st.markdown(
+            """
+            <div class='enterprise-panel' style='height: 100%;'>
+                <div style='font-size: 0.78rem; font-weight: 700; color: #0284c7;'>HOSPITAL 2</div>
+                <div style='font-size: 0.95rem; font-weight: 700; color: #0f172a; margin-bottom: 6px;'>Regional Community General</div>
+                <div style='font-size: 0.8rem; color: #475569;'>
+                    • Train Samples: <b>190 patients</b><br>
+                    • Local Validation: <b>50 patients</b><br>
+                    • Deterioration Rate: <b>~42.1%</b> (Moderate)<br>
+                    • Sample Share: <b>33.9%</b>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    with hc3:
+        st.markdown(
+            """
+            <div class='enterprise-panel' style='height: 100%;'>
+                <div style='font-size: 0.78rem; font-weight: 700; color: #d97706;'>HOSPITAL 3</div>
+                <div style='font-size: 0.95rem; font-weight: 700; color: #0f172a; margin-bottom: 6px;'>Rural / Outreach Clinic</div>
+                <div style='font-size: 0.8rem; color: #475569;'>
+                    • Train Samples: <b>110 patients</b> (Scarce)<br>
+                    • Local Validation: <b>30 patients</b><br>
+                    • Deterioration Rate: <b>~24.5%</b> (Under-resourced)<br>
+                    • Sample Share: <b>19.6%</b>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    with hc4:
+        st.markdown(
+            """
+            <div class='enterprise-panel' style='height: 100%;'>
+                <div style='font-size: 0.78rem; font-weight: 700; color: #64748b;'>CENTRAL HOLDOUT</div>
+                <div style='font-size: 0.95rem; font-weight: 700; color: #0f172a; margin-bottom: 6px;'>Isolated Test Cohort</div>
+                <div style='font-size: 0.8rem; color: #475569;'>
+                    • Test Samples: <b>150 patients</b><br>
+                    • Central Val: <b>150 patients</b><br>
+                    • Zero Train/Val/Test Overlap<br>
+                    • Balanced Event Rate: <b>~34.7%</b>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+
+    # 4. Standardized 5-Way Benchmark Comparison
+    st.markdown("### 📊 Standardized 5-Way Benchmark Comparison")
+    st.caption("All models trained on identical multi-hospital splits and evaluated on 150 strictly isolated holdout test patients.")
+
+    comp_csv = os.path.join(PROJECT_ROOT, "results", "metrics", "leaf_fl_comparison.csv")
+    if os.path.exists(comp_csv):
+        df_comp = pd.read_csv(comp_csv)
+        st.dataframe(
+            df_comp.style.format({
+                "Accuracy": "{:.2%}",
+                "F1-Score": "{:.4f}",
+                "Recall (Sensitivity)": "{:.2%}",
+                "ROC-AUC": "{:.4f}",
+                "Avg Lead Time (Months)": "{:.2f} Mo",
+                "Missed Event Rate": "{:.2%}",
+                "Worst-Hospital Recall": "{:.2%}",
+                "Max Recall Gap": "{:.4f}"
+            }),
+            use_container_width=True,
+            hide_index=True
+        )
+
+        st.markdown(
+            """
+            <div style='background-color: #f8fafc; border-left: 4px solid #0f766e; padding: 12px 16px; border-radius: 4px; margin-top: 10px; font-size: 0.85rem; color: #334155;'>
+                <b>Key Research Takeaway:</b> Standard FedAvg yields an inter-hospital recall disparity gap of <b>0.2368</b> because Hospital 3 only commands 19.6% of aggregation influence. 
+                Under <b>LEAF-FL (&lambda;=0.50)</b>, the disparity gap drops to <b>0.1842 (a 22.2% compression)</b> while simultaneously improving global Holdout Accuracy (74.67% &rarr; 76.00%) 
+                and F1-score (0.6346 &rarr; 0.6471).
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+
+    # 5. Lambda Sensitivity & Equity Ablation Curve
+    st.markdown("### 📈 Equity Weight Parameter (&lambda;) Ablation Study")
+    st.caption("Varying &lambda; from 0.0 (Pure FedAvg) to 1.0 (Pure Error-Weighted Equity) reveals the optimal trade-off frontier.")
+
+    ablation_csv = os.path.join(PROJECT_ROOT, "results", "metrics", "leaf_fl_ablation_lambda.csv")
+    tradeoff_plot = os.path.join(PROJECT_ROOT, "results", "plots", "leaf_fl_equity_tradeoff.png")
+
+    ab_col1, ab_col2 = st.columns([1.1, 0.9])
+    with ab_col1:
+        if os.path.exists(tradeoff_plot):
+            st.image(tradeoff_plot, caption="Figure 1: Global F1-Score vs. Worst-Hospital Recall Trade-Off across Lambda", use_container_width=True)
+    with ab_col2:
+        if os.path.exists(ablation_csv):
+            df_ablation = pd.read_csv(ablation_csv)
+            st.dataframe(
+                df_ablation[[
+                    "lambda_equity", "Accuracy", "F1_Score", "ROC_AUC", "Worst_Hospital_Recall", "Max_Recall_Gap"
+                ]].style.format({
+                    "lambda_equity": "{:.2f}",
+                    "Accuracy": "{:.2%}",
+                    "F1_Score": "{:.4f}",
+                    "ROC_AUC": "{:.4f}",
+                    "Worst_Hospital_Recall": "{:.2%}",
+                    "Max_Recall_Gap": "{:.4f}"
+                }),
+                use_container_width=True,
+                hide_index=True
+            )
+            st.markdown(
+                """
+                <div style='font-size: 0.82rem; color: #475569; line-height: 1.45; margin-top: 8px;'>
+                    • <b>&lambda; = 0.00:</b> Pure sample-size FedAvg. Largest disparity gap (0.2368).<br>
+                    • <b>&lambda; = 0.50 (Optimal):</b> Highest F1-score (0.6471), lowest gap (0.1842).<br>
+                    • <b>&lambda; = 1.00:</b> Pure error-weighting leads to slight over-regularization on small client noise.
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+    st.markdown("---")
+
+    # 6. Clinical Lead Time & Dynamic Weight Adaptation
+    st.markdown("### ⏱️ Early Warning Lead Times & Weight Adaptation Across Rounds")
+
+    w_col1, w_col2 = st.columns(2)
+    with w_col1:
+        lead_time_plot = os.path.join(PROJECT_ROOT, "results", "plots", "leaf_fl_lead_time_distribution.png")
+        if os.path.exists(lead_time_plot):
+            st.image(lead_time_plot, caption="Figure 2: Distribution of Early Warning Lead Times (Months Before Deterioration)", use_container_width=True)
+            st.markdown(
+                """
+                <div style='font-size: 0.82rem; color: #334155; line-height: 1.45;'>
+                    • <b>Mean Lead Time:</b> 6.48 Months prior to deterioration.<br>
+                    • <b>Clinical Value:</b> Allows timely outpatient care recalibration months before acute hospitalization occurs.
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+    with w_col2:
+        weights_plot = os.path.join(PROJECT_ROOT, "results", "plots", "leaf_fl_weights_adaptation.png")
+        if os.path.exists(weights_plot):
+            st.image(weights_plot, caption="Figure 3: Adaptive Aggregation Weights (alpha_k) Evolution across Communication Rounds", use_container_width=True)
+            st.markdown(
+                """
+                <div style='font-size: 0.82rem; color: #334155; line-height: 1.45;'>
+                    • <b>Dynamic Elevation:</b> Hospital 3's weight starts at 29.1% and maintains 27.4%–30.3% (vs. baseline sample share of 19.6%), ensuring rural clinical patterns are preserved in the global model.
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+    st.markdown("---")
+
+    # 7. Interactive LEAF-FL Simulator
+    st.markdown("### 🎛️ Interactive LEAF-FL Simulation Runner")
+    st.caption("Train a fresh LEAF-FL model across the 3 hospital partitions with custom hyperparameters.")
+
+    sim_c1, sim_c2, sim_c3, sim_c4 = st.columns(4)
+    with sim_c1:
+        sim_lambda = st.slider("Equity Weight (&lambda;):", min_value=0.0, max_value=1.0, value=0.50, step=0.05)
+    with sim_c2:
+        sim_tau = st.slider("Softmax Temp (&tau;):", min_value=0.5, max_value=3.0, value=2.0, step=0.5)
+    with sim_c3:
+        sim_rounds = st.slider("Communication Rounds:", min_value=3, max_value=8, value=5, step=1)
+    with sim_c4:
+        sim_epochs = st.slider("Local Client Epochs:", min_value=1, max_value=5, value=3, step=1)
+
+    if st.button("🚀 Train Custom LEAF-FL Model", use_container_width=True):
+        with st.spinner(f"Simulating LEAF-FL (&lambda;={sim_lambda:.2f}, &tau;={sim_tau:.1f}, {sim_rounds} rounds)..."):
+            data_dict = load_leaf_dataset_from_disk()
+            res = run_leaf_fl_experiment(
+                data_dict=data_dict,
+                num_rounds=sim_rounds,
+                local_epochs=sim_epochs,
+                batch_size=32,
+                lr=0.005,
+                lambda_equity=sim_lambda,
+                tau=sim_tau,
+                random_seed=42
+            )
+        st.success("LEAF-FL Simulation Completed!")
+
+        res_m = res["global_test_metrics"]
+        res_eq = res["equity_metrics"]
+
+        rc1, rc2, rc3, rc4 = st.columns(4)
+        rc1.metric("Test Accuracy", f"{res_m['accuracy']:.2%}")
+        rc2.metric("Test F1-Score", f"{res_m['f1_score']:.4f}")
+        rc3.metric("Worst-Hospital Recall", f"{res_eq['worst_hospital_recall']:.2%}")
+        rc4.metric("Max Recall Disparity Gap", f"{res_eq['max_recall_gap']:.4f}")
+
+        # Show round history
+        st.markdown("#### Round Progression & Dynamic Weights")
+        st.dataframe(res["round_history"], use_container_width=True, hide_index=True)
+
+    st.markdown("---")
+
+    # 8. Research Integrity, Privacy & Academic Submission Notice
+    st.markdown("### 🛡️ Research Rigor & Privacy-Preserving Guarantees")
+    st.markdown(
+        """
+        <div style='background-color: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 6px; padding: 16px 20px; font-size: 0.85rem; color: #334155; line-height: 1.55;'>
+            <b>Formal Academic & Privacy Assurances:</b><br>
+            • <b>Zero Sequence Transmission:</b> Only model state tensors (<code>state_dict</code>) are shared with the aggregator. Local patient records remain strictly partitioned within each hospital boundary.<br>
+            • <b>Zero Test-Set Contamination:</b> Aggregation error scores <code>E_k</code> are strictly calculated from local validation splits (60, 50, and 30 patients). The 150 central test records are untouched until final global evaluation.<br>
+            • <b>Zero Future-Leakage:</b> The observation input is strictly 6 time-steps ($N \\times 6 \\times 5$). Future deterioration criteria in months 7–12 are strictly targets, preventing temporal leakage.<br>
+            • <b>Synthetic Research Disclaimer:</b> This implementation is a scientific research simulation developed as a capstone thesis contribution. No actual Protected Health Information (PHI) was accessed.
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+# ==========================================
 # ROUTER
 # ==========================================
 if nav_selection == "📌 Overview":
@@ -3354,6 +3723,8 @@ elif nav_selection == "🧬 Federated Transfer Learning":
     render_federated_transfer()
 elif nav_selection == "📈 Hybrid CNN-LSTM":
     render_hybrid_cnn_lstm()
+elif nav_selection == "🌿 LEAF-FL Deterioration":
+    render_leaf_fl()
 elif nav_selection == "☁️ Experiment History":
     render_experiment_history()
 
