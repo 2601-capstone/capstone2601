@@ -24,7 +24,8 @@ credentials.json
 *.pem
 
 # Streamlit & IDE
-.streamlit/
+.streamlit/*
+!.streamlit/config.toml
 .vscode/
 .idea/
 .DS_Store
